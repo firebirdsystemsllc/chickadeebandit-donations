@@ -41,7 +41,7 @@ Schema is managed by hub migrations in `migrations/001_init.sql` — do not run 
 Import shared utilities from `/hub-sdk.js`:
 
 ```js
-import { memberColor, initial, esc, isAdult, hubConfirm, formatRelativeDate } from "/hub-sdk.js";
+import { memberColor, initial, esc, isAdult, hubConfirm, formatRelativeDate, fmtMoney, fmtMoneyShort } from "/hub-sdk.js";
 ```
 
 - `memberColor(memberId, members)` — deterministic color string for a member's avatar
@@ -49,6 +49,8 @@ import { memberColor, initial, esc, isAdult, hubConfirm, formatRelativeDate } fr
 - `esc(str)` — HTML-escape a string before injecting into innerHTML
 - `isAdult(member, members)` — returns true if the member has role "adult"
 - `hubConfirm({ message, description?, confirmLabel?, destructive? })` — async confirm dialog; returns true/false
+- `fmtMoney(cents)` — format integer cents as USD with no decimals: `fmtMoney(125000)` → `"$1,250"`. Returns `"—"` for null.
+- `fmtMoneyShort(cents)` — compact format for large amounts: `$450K`, `$1.3M`. Use for summary displays.
 
 Always use `esc()` when rendering user-provided strings into HTML templates.
 
