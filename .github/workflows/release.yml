@@ -14,7 +14,14 @@ jobs:
   # monorepo. See firebirdsystems/chickadeebandit packages/hub/contract-ci.
   contract:
     runs-on: ubuntu-latest
+    env:
+      HUB_CHECKOUT_TOKEN: ${{ secrets.HUB_CHECKOUT_TOKEN }}
     steps:
+      - name: Verify hub checkout token is configured
+        if: env.HUB_CHECKOUT_TOKEN == ''
+        run: |
+          echo "::error::Missing repository secret HUB_CHECKOUT_TOKEN. Create a fine-grained GitHub token with read access to firebirdsystems/chickadeebandit and add it as this repo's HUB_CHECKOUT_TOKEN secret."
+          exit 1
       - name: Check out this app
         uses: actions/checkout@v4
         with:
@@ -23,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: firebirdsystems/chickadeebandit
-          token: ${{ secrets.HUB_CHECKOUT_TOKEN }}
+          token: ${{ env.HUB_CHECKOUT_TOKEN }}
           path: hub
       - uses: actions/setup-node@v4
         with:
